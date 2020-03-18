@@ -1,24 +1,29 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const EditPost= ({ addPost, post, history }) => {
+const EditPost= ({ post, editPost, history }) => {
+
+  const { id, title, category, content } = post
+
     const initialState = {
-        id: post.id,
-        title: post.title,
-        category: post.category,
-        content: post.content
+        id : id,
+        title: title,
+        category: category,
+        content: content
       }
   
   const [formData, setFormData] = useState(initialState)
 
   const handleChange = e => {
     const { name, value } = e.target
-    const newData = { ...formData, [name]: value }
-    setFormData(newData)
+    const editedPost = { ...formData, [name]: value }
+    setFormData(editedPost)
+    console.log(formData)
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    addPost(formData)
+    editPost(id,formData)
     history.push('/posts')
   }
 
@@ -70,6 +75,10 @@ const EditPost= ({ addPost, post, history }) => {
       
     </form>
   )
+}
+
+EditPost.propTypes = {
+  post: PropTypes.object.isRequired
 }
 
 export default EditPost

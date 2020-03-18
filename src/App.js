@@ -5,39 +5,49 @@ import LandingPage from './components/LandingPage'
 import AddPost from './components/AddPost'
 import Post from './components/Post'
 import EditPost from './components/EditPost'
-//import {randomId} from './components/randomID'
+import {randomId} from './components/randomID'
+import {postsData} from './data/postsData'
 
 const App = () => {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState(postsData)
+
   const addPost = post => {
-    post.id = posts.length+1
-   
+    post.id = randomId()
     const newPost = [...posts, post]
     setPosts(newPost)
   }
 
-  const postById = id => posts.find(post => post.id === post.id)
- 
+  const editPost = (id, editedPost) => {
+    const newPosts = posts.map(post => post.id === id ? editedPost : post)
+    setPosts(newPosts)
+  }
+
   const deletePost = id => {
     const newPosts = posts.filter(post => post.id !== id)
-    setPosts(newPosts )
+    setPosts(newPosts)
   }
+
+  const postById = id => posts.find(post => post.id === id)
 
   return (
     <BrowserRouter>
       <div className='App'>
         <Switch>
-        <Route path="/post/:id" 
-        component={props => <Post  {...props} post={postById(props.match.params.id)} deletePost={deletePost}  />} 
+        <Route path='/posts/:id'
+        component={props => 
+        <Post  {...props} post={postById(props.match.params.id)} posts={posts} deletePost={deletePost}  />} 
         />
-        <Route path="/editpost/:id" 
-        component={props => <EditPost  {...props} post={postById(props.match.params.id)}  />} 
+        <Route path='/editpost/:id'
+        component={props => 
+        <EditPost  {...props} post={postById(props.match.params.id)} editPost={editPost} />} 
         />
-        <Route path='/addpost'
-        component={props => <AddPost {...props} addPost={addPost} />}
+        <Route path='/newpost'
+        component={props => 
+        <AddPost {...props} addPost={addPost} />}
         />
         <Route path='/'
-        component={props => <LandingPage {...props} posts={posts} />}
+        component={props => 
+        <LandingPage {...props} posts={posts} />}
         />
         </Switch>
       </div>
@@ -46,17 +56,3 @@ const App = () => {
 }
 
 export default App
-//setPosts={setPosts}
- //path='/post/:id'
- /*  <Route
-            path='/addpost'
-            component={props => <AddPost {...props} addPost={addPost} />}
-          />
-           <Route
-            path='/post/:id'
-            component={props => <Post {...props} post={postById(props.match.params.id)} posts={posts}  />}
-          />
-          <Route
-            path='/posts'
-            component={props => <Posts {...props} posts={posts} />}
-          />*/

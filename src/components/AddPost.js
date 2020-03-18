@@ -10,10 +10,9 @@ const AddPost= ({ addPost, history }) => {
 
   const handleChange = e => {
     const { name, value } = e.target
-    const newData = { ...formData, [name]: value }
-    setFormData(newData)
+    const newPost = { ...formData, [name]: value }
+    setFormData(newPost)
   }
-
 
   const handleSubmit = e => {
     e.preventDefault()
